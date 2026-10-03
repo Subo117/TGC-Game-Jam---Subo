@@ -1,19 +1,30 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float health = 100f;
+    [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float moveSpeed = 2f;
 
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackRange = 1.2f;
     [SerializeField] private float attackCooldown = 1f;
 
+    [SerializeField, Range(0f, 100f)] private float orbSpawnChance = 50f;
+    [SerializeField] private GameObject orbPrefab;
+
+    [SerializeField] private Slider healthBar;
+    private float currentHealth;
+
     private Transform player;
     private float nextAttackTime;
 
     void Start()
     {
+        currentHealth = maxHealth;
+        healthBar.maxValue = maxHealth;
+        healthBar.value = currentHealth;
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -58,9 +69,11 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
+        currentHealth -= damage;
 
-        if (health <= 0)
+        healthBar.value = currentHealth;
+
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -68,6 +81,13 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        float randomChance = Random.Range(0f, 100f);
+
+        if (randomChance <= orbSpawnChance)
+        {
+            Instantiate(orbPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }

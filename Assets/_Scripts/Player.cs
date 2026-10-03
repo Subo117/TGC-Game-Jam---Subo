@@ -30,8 +30,10 @@ public class Player : MonoBehaviour
         enemy.TakeDamage(attackDamage);
     }
 
+
     void Die()
     {
         Debug.Log("Player Died");
+        Time.timeScale = 0f; // Pause the game
     }
 }
