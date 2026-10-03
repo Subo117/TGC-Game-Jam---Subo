@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    [SerializeField] private int score = 0;
+    [SerializeField] private int currentOrb = 0;
+    
+    public int CurrentOrb => currentOrb;
 
     private void Awake()
     {
@@ -21,12 +24,12 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore(int score)
     {
-        this.score += score;
-        Debug.Log($"Score : {this.score}");
+        this.currentOrb += score;
+        Debug.Log($"Current Orb : {this.currentOrb}");
     }
 
     public int GetScore()
     {
-        return score;
+        return currentOrb;
     }
 }

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject easyEnemyPrefab;
+    [SerializeField] private GameObject mediumEnemyPrefab;
     [SerializeField] private Transform player;
 
     [SerializeField] private float minX;
@@ -10,11 +11,30 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float minY;
     [SerializeField] private float maxY;
 
-    [SerializeField] private float spawnTime = 2f;
+    [SerializeField] private float startSpawnTime = 2f;
+    [SerializeField] private float minimumSpawnTime = 0.5f;
 
-    void Start()
+    private float spawnTimer;
+    private float gameTime;
+
+    void Update()
     {
-        InvokeRepeating(nameof(SpawnEnemy), 1f, spawnTime);
+        gameTime += Time.deltaTime;
+
+        spawnTimer -= Time.deltaTime;
+
+        if (spawnTimer <= 0f)
+        {
+            SpawnEnemy();
+            spawnTimer = GetSpawnTime();
+        }
+    }
+
+    float GetSpawnTime()
+    {
+        float difficulty = Mathf.Clamp01(gameTime / 300f);
+
+        return Mathf.Lerp(startSpawnTime, minimumSpawnTime, difficulty);
     }
 
     void SpawnEnemy()
@@ -24,6 +44,41 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 spawnPosition = new Vector2(randomX, randomY);
 
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        float mediumChance = GetMediumChance();
+
+        GameObject enemyToSpawn;
+
+        if (Random.Range(0f, 100f) < mediumChance)
+        {
+            enemyToSpawn = mediumEnemyPrefab;
+        }
+        else
+        {
+            enemyToSpawn = easyEnemyPrefab;
+        }
+
+        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+    }
+
+    float GetMediumChance()
+    {
+        float minutes = gameTime / 60f;
+
+        if (minutes < 1f)
+            return 0f;
+
+        if (minutes < 2f)
+            return 10f;
+
+        if (minutes < 3f)
+            return 25f;
+
+        if (minutes < 4f)
+            return 40f;
+
+        if (minutes < 5f)
+            return 60f;
+
+        return 80f;
     }
 }
