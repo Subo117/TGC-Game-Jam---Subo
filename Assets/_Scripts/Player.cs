@@ -34,6 +34,14 @@ public class Player : MonoBehaviour
         enemy.TakeDamage(attackDamage);
     }
 
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
 
     void Die()
     {

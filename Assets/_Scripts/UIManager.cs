@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,28 +15,28 @@ public class UIManager : MonoBehaviour
     [Header("Screen")]
     [SerializeField] private GameObject pauseScreen;
 
+    [Header("Texts")]
+    [SerializeField] private TMP_Text instructionText;
+
     [Header("Values")]
-    [SerializeField] private int maxOrb = 20;
+    [SerializeField] private int maxOrb = 500;
+
+    public static event Action OnMaxOrbReached;
 
 
     private void OnEnable()
     {
         player.OnHealthChanged += UpdateHealthBar;
+        CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
 
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.OnScoreChanged += UpdateOrbBar;
-        }
     }
+
 
     private void OnDisable()
     {
         player.OnHealthChanged -= UpdateHealthBar;
+        CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
 
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.OnScoreChanged -= UpdateOrbBar;
-        }
     }
 
     private void Start()
@@ -61,7 +63,19 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("In UpdateOrbBar");
         darkOrbBar.value = score;
+
+        if(ScoreManager.Instance.CurrentOrb >= maxOrb)
+        {
+            instructionText.text = "Rush toward the centre area!!";
+            OnMaxOrbReached?.Invoke();
+        }
     }
+
+    private void OnPlayerInCentreArea(bool isInArea)
+    {
+        if(isInArea) instructionText.text = "Press E to Upgrade";
+        else instructionText.text = "Rush toward the centre area!!";
+    }  
 
     public void PauseGame()
     {
