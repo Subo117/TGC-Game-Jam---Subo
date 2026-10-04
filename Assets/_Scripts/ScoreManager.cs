@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int currentOrb = 0;
     
     public int CurrentOrb => currentOrb;
+
+    public event Action<int> OnScoreChanged;
 
     private void Awake()
     {
@@ -25,7 +28,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int score)
     {
         this.currentOrb += score;
-        Debug.Log($"Current Orb : {this.currentOrb}");
+        OnScoreChanged?.Invoke(currentOrb);
     }
 
     public int GetScore()
