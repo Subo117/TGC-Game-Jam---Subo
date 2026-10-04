@@ -61,7 +61,6 @@ public class UIManager : MonoBehaviour
 
     private void UpdateOrbBar(int score)
     {
-        Debug.Log("In UpdateOrbBar");
         darkOrbBar.value = score;
 
         if(ScoreManager.Instance.CurrentOrb >= maxOrb)
