@@ -29,6 +29,7 @@ public class ScoreManager : MonoBehaviour
     {
         this.currentOrb += score;
         OnScoreChanged?.Invoke(currentOrb);
+        Debug.Log("Current Orb: " + currentOrb);
     }
 
     public int GetScore()

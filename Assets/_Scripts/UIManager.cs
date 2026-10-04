@@ -6,12 +6,15 @@ public class UIManager : MonoBehaviour
     [Header("Script Reference")]
     [SerializeField] private Player player;
 
-    [Header("UI Elements")]
+    [Header("Slider")]
     [SerializeField] private Slider playerHealthBar;
     [SerializeField] private Slider darkOrbBar;
 
+    [Header("Screen")]
+    [SerializeField] private GameObject pauseScreen;
+
     [Header("Values")]
-    [SerializeField] private int maxOrb = 500;
+    [SerializeField] private int maxOrb = 20;
 
 
     private void OnEnable()
@@ -44,6 +47,9 @@ public class UIManager : MonoBehaviour
         darkOrbBar.minValue = 0;
         darkOrbBar.maxValue = maxOrb;
         darkOrbBar.value = ScoreManager.Instance.CurrentOrb;
+
+        playerHealthBar.interactable = false;
+        darkOrbBar.interactable = false;
     }
 
     private void UpdateHealthBar()
@@ -55,5 +61,24 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("In UpdateOrbBar");
         darkOrbBar.value = score;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        pauseScreen.SetActive(true);
+
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        pauseScreen.SetActive(false);
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
     }
 }
