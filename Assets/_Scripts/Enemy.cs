@@ -95,12 +95,14 @@ public class Enemy : MonoBehaviour
 
     void StartJumping()
     {
+        Debug.Log("start jumping");
         float randomDelay = Random.Range(0f, 1.5f);
 
         LeanTween.delayedCall(gameObject, randomDelay, () =>
         {
             LeanTween.moveY(gameObject, transform.position.y + 0.5f, 0.3f).setEaseOutQuad().setLoopPingPong();
         });
+
     }
 
     private void AttackPlayer()
@@ -147,7 +149,7 @@ public class Enemy : MonoBehaviour
                 Instantiate(orbPrefab, transform.position, Quaternion.identity);
             }
         }
-        //AudioManager.Instance.PlayKillClip();
+        AudioManager.Instance.PlayKillClip();
 
         Destroy(gameObject);
     }

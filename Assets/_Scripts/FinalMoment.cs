@@ -85,7 +85,7 @@ public class FinalMoment : MonoBehaviour
 
         StartCoroutine(DiscoLight());
 
-        //AudioManager.Instance.PlayDiscoMusic();
+        AudioManager.Instance.PlayDiscoMusic();
 
         yield return new WaitForSeconds(10f);
 
