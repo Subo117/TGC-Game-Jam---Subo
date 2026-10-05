@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText += ChangeInstructiontext;
-        //Player.OnPlayerDied += GameOverMenu;
+        Player.OnPlayerDied += GameOverMenu;
     }
 
     private void OnDisable()
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText -= ChangeInstructiontext;
-        //Player.OnPlayerDied -= GameOverMenu;
+        Player.OnPlayerDied -= GameOverMenu;
 
 
         if (ScoreManager.Instance != null)
@@ -139,11 +139,11 @@ public class UIManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
     }
 
-    //public void GameOverMenu()
-    //{
-    //    Time.timeScale = 0f;
-    //    GameOverScreen.SetActive(true);
-    //}
+    public void GameOverMenu()
+    {
+        Time.timeScale = 0f;
+        pauseScreen.SetActive(true);
+    }
 
     IEnumerator StartText()
     {
