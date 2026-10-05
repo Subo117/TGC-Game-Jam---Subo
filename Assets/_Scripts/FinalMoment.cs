@@ -77,7 +77,6 @@ public class FinalMoment : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         StartCoroutine(DiscoLight());
-
     }
 
     IEnumerator DoFinalMomentRoutine()
