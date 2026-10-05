@@ -26015,6 +26015,16 @@ MonoBehaviour:
   startLens: 13
   targetLens: 13
   finalEnemySprite: {fileID: 1742374241349663434, guid: 536bae3729ef93f4c91067eea2397008, type: 3}
+  discoChangeTime: 0.3
+  discoColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.05014038, b: 1, a: 1}
+  - {r: 0.95190054, g: 1, b: 0, a: 1}
+  - {r: 0.07818723, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.7984207, a: 1}
+  - {r: 1, g: 0, b: 0.8189957, a: 1}
+  - {r: 1, g: 0.5419183, b: 0, a: 1}
+  - {r: 0.32347575, g: 0, b: 0.8867924, a: 1}
 --- !u!1 &1367582426
 GameObject:
   m_ObjectHideFlags: 0

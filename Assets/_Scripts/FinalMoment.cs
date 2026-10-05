@@ -25,6 +25,12 @@ public class FinalMoment : MonoBehaviour
     [Header("Enemy Sprites")]
     [SerializeField] private Sprite finalEnemySprite;
 
+    [Header("Disco Light")]
+    [SerializeField] private float discoChangeTime = 0.3f;
+    [SerializeField] private Color[] discoColors;
+
+    private int currentColorIndex = 0;
+
     public static event Action OnStartJumping;
 
     private void OnEnable()
@@ -68,6 +74,10 @@ public class FinalMoment : MonoBehaviour
 
         OnStartJumping?.Invoke();
 
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(DiscoLight());
+
     }
 
     IEnumerator DoFinalMomentRoutine()
@@ -84,7 +94,6 @@ public class FinalMoment : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         StartCoroutine(ChangeEnemySprites());
-
     }
 
     private IEnumerator ChangeColor()
@@ -133,6 +142,23 @@ public class FinalMoment : MonoBehaviour
         }
 
         cam.Lens.OrthographicSize = targetLens;
+    }
+
+    private IEnumerator DiscoLight()
+    {
+        while (true)
+        {
+            globalLight.color = discoColors[currentColorIndex];
+
+            currentColorIndex++;
+
+            if (currentColorIndex >= discoColors.Length)
+            {
+                currentColorIndex = 0;
+            }
+
+            yield return new WaitForSeconds(discoChangeTime);
+        }
     }
 
 }
