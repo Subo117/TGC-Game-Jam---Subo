@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class CentreArea : MonoBehaviour
 {
     public static event Action<bool> OnPlayerInCentreArea;
+    public static event Action<String> ChangeInstructionText;
     public static event Action OnFinalMoment;
 
     public static bool FinalMomentStarted { get; private set; }
@@ -74,6 +75,7 @@ public class CentreArea : MonoBehaviour
         Debug.Log("Final Moment Triggered");
 
         FinalMomentStarted = true;
+        ChangeInstructionText?.Invoke("");
 
         OnFinalMoment?.Invoke();
     }

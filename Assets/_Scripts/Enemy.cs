@@ -29,11 +29,13 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         CentreArea.OnFinalMoment += StopChasing;
+        FinalMoment.OnStartJumping += StartJumping;
     }
 
     private void OnDisable()
     {
         CentreArea.OnFinalMoment -= StopChasing;
+        FinalMoment.OnStartJumping -= StartJumping;
     }
 
     private void Start()
@@ -89,6 +91,16 @@ public class Enemy : MonoBehaviour
     private void StopChasing()
     {
         canChase = false;
+    }
+
+    void StartJumping()
+    {
+        float randomDelay = Random.Range(0f, 1.5f);
+
+        LeanTween.delayedCall(gameObject, randomDelay, () =>
+        {
+            LeanTween.moveY(gameObject, transform.position.y + 0.5f, 0.3f).setEaseOutQuad().setLoopPingPong();
+        });
     }
 
     private void AttackPlayer()

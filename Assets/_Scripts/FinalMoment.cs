@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Unity.Cinemachine;
+using System;
 
 public class FinalMoment : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class FinalMoment : MonoBehaviour
     [SerializeField] private float startLens = 13f;
     [SerializeField] private float targetLens = 13f;
 
+    [Header("Enemy Sprites")]
+    [SerializeField] private Sprite finalEnemySprite;
+
+    public static event Action OnStartJumping;
+
     private void OnEnable()
     {
         CentreArea.OnFinalMoment += DoFinalMoment;
@@ -36,13 +42,49 @@ public class FinalMoment : MonoBehaviour
         StartCoroutine(DoFinalMomentRoutine());
     }
 
+    private IEnumerator ChangeEnemySprites()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            SpriteRenderer spriteRenderer = enemy.GetComponent<SpriteRenderer>();
+            
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite = finalEnemySprite;
+            }
+
+            Canvas canvas = enemy.GetComponentInChildren<Canvas>();
+
+            if (canvas != null)
+            {
+                Destroy(canvas.gameObject);
+            }
+
+        }
+        yield return new WaitForSeconds(1f);
+
+        OnStartJumping?.Invoke();
+
+    }
+
     IEnumerator DoFinalMomentRoutine()
     {
         yield return new WaitForSeconds(3f);
 
         StartCoroutine(ChangeColor());
         StartCoroutine(ChangeIntensity());
-        StartCoroutine(ChangeLens());
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(ChangeLens(transitionTime / 2f));
+
+        yield return new WaitForSeconds(3f);
+
+        StartCoroutine(ChangeEnemySprites());
+
     }
 
     private IEnumerator ChangeColor()
@@ -77,15 +119,15 @@ public class FinalMoment : MonoBehaviour
         playerFlashLight.intensity = targetIntensity;
     }
 
-    private IEnumerator ChangeLens()
+    private IEnumerator ChangeLens(float time)
     {
         float timer = 0f;
         startLens = cam.Lens.OrthographicSize;
 
-        while (timer < transitionTime)
+        while (timer < time)
         {
             timer += Time.deltaTime;
-            float t = timer / transitionTime;
+            float t = timer / time;
             cam.Lens.OrthographicSize = Mathf.Lerp(startLens, targetLens, t);
             yield return null;
         }

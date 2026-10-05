@@ -26014,6 +26014,7 @@ MonoBehaviour:
   cam: {fileID: 352798641}
   startLens: 13
   targetLens: 13
+  finalEnemySprite: {fileID: 1742374241349663434, guid: 536bae3729ef93f4c91067eea2397008, type: 3}
 --- !u!1 &1367582426
 GameObject:
   m_ObjectHideFlags: 0

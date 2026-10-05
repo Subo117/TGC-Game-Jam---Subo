@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.GameCenter;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
         }
 
         CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
+        CentreArea.ChangeInstructionText += ChangeInstructiontext;
     }
 
     private void OnDisable()
@@ -39,9 +41,11 @@ public class UIManager : MonoBehaviour
         if (player != null)
         {
             player.OnHealthChanged -= UpdateHealthBar;
+
         }
 
         CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
+        CentreArea.ChangeInstructionText -= ChangeInstructiontext;
 
         if (ScoreManager.Instance != null)
         {
@@ -97,7 +101,10 @@ public class UIManager : MonoBehaviour
             instructionText.text = "Rush toward the centre area!!";
         }
     }
-
+    public void ChangeInstructiontext(string text)
+    {
+        instructionText.text = text;
+    }
     public void PauseGame()
     {
         Time.timeScale = 0f;
