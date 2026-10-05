@@ -2,17 +2,29 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Enemies")]
     [SerializeField] private GameObject easyEnemyPrefab;
     [SerializeField] private GameObject mediumEnemyPrefab;
-    [SerializeField] private Transform player;
 
-    [SerializeField] private float minX;
-    [SerializeField] private float maxX;
-    [SerializeField] private float minY;
-    [SerializeField] private float maxY;
-
+    [Header("Normal Spawning")]
     [SerializeField] private float startSpawnTime = 2f;
     [SerializeField] private float minimumSpawnTime = 0.5f;
+
+    [Header("Arena")]
+    [SerializeField] private float minX = -18f;
+    [SerializeField] private float maxX = 18f;
+    [SerializeField] private float minY = -10f;
+    [SerializeField] private float maxY = 10f;
+
+    [Header("Final Moment")]
+    [SerializeField] private int minFinalEnemies = 10;
+    [SerializeField] private int maxFinalEnemies = 15;
+
+    [Header("Camera View")]
+    [SerializeField] private float cameraMinX = -13f;
+    [SerializeField] private float cameraMaxX = 13f;
+    [SerializeField] private float cameraMinY = -7f;
+    [SerializeField] private float cameraMaxY = 7f;
 
     private float spawnTimer;
     private float gameTime;
@@ -27,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
         CentreArea.OnFinalMoment -= StopSpawning;
     }
 
-    void Update()
+    private void Update()
     {
         gameTime += Time.deltaTime;
 
@@ -40,14 +52,14 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    float GetSpawnTime()
+    private float GetSpawnTime()
     {
         float difficulty = Mathf.Clamp01(gameTime / 300f);
 
         return Mathf.Lerp(startSpawnTime, minimumSpawnTime, difficulty);
     }
 
-    void SpawnEnemy()
+    private void SpawnEnemy()
     {
         float randomX = Random.Range(minX, maxX);
         float randomY = Random.Range(minY, maxY);
@@ -72,10 +84,51 @@ public class EnemySpawner : MonoBehaviour
 
     private void StopSpawning()
     {
+        int enemyCount = Random.Range(minFinalEnemies, maxFinalEnemies + 1);
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            SpawnEnemyOutsideCamera();
+        }
+
         enabled = false;
     }
 
-    float GetMediumChance()
+    private void SpawnEnemyOutsideCamera()
+    {
+        Vector2 spawnPosition;
+
+        do
+        {
+            spawnPosition = new Vector2(
+                Random.Range(minX, maxX),
+                Random.Range(minY, maxY)
+            );
+
+        } while (
+            spawnPosition.x > cameraMinX &&
+            spawnPosition.x < cameraMaxX &&
+            spawnPosition.y > cameraMinY &&
+            spawnPosition.y < cameraMaxY
+        );
+
+        float mediumChance = GetMediumChance();
+
+        GameObject enemyToSpawn;
+
+        if (Random.Range(0f, 100f) < mediumChance)
+        {
+            enemyToSpawn = mediumEnemyPrefab;
+        }
+        else
+        {
+            enemyToSpawn = easyEnemyPrefab;
+        }
+
+        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+    }
+
+    private float GetMediumChance()
     {
         float minutes = gameTime / 60f;
 

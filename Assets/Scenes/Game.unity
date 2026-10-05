@@ -29819,7 +29819,7 @@ MonoBehaviour:
   darkOrbBar: {fileID: 1045987852}
   pauseScreen: {fileID: 958658318}
   instructionText: {fileID: 669348478}
-  maxOrb: 500
+  maxOrb: 100
 --- !u!1 &1576740896
 GameObject:
   m_ObjectHideFlags: 0
@@ -30386,13 +30386,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   easyEnemyPrefab: {fileID: 962532576022224598, guid: 59b68b831731081468fdf2797a0a0a97, type: 3}
   mediumEnemyPrefab: {fileID: 6251054417311800371, guid: c090ed0c30fa6284fb8715bc09d5a49c, type: 3}
-  player: {fileID: 1297602012}
+  startSpawnTime: 2
+  minimumSpawnTime: 0.5
   minX: -18
   maxX: 18
   minY: -10
   maxY: 10
-  startSpawnTime: 2
-  minimumSpawnTime: 0.5
+  minFinalEnemies: 10
+  maxFinalEnemies: 15
+  cameraMinX: -13
+  cameraMaxX: 13
+  cameraMinY: -7
+  cameraMaxY: 7
 --- !u!4 &1898823100
 Transform:
   m_ObjectHideFlags: 0

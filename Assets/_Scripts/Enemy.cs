@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject orbPrefab;
 
     [SerializeField] private Slider healthBar;
+
     private float currentHealth;
 
     private Transform player;
@@ -21,14 +22,7 @@ public class Enemy : MonoBehaviour
 
     private bool canChase = true;
 
-    void Start()
-    {
-        currentHealth = maxHealth;
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
-
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+    private static bool finalMomentStarted = false;
 
     private void OnEnable()
     {
@@ -40,9 +34,25 @@ public class Enemy : MonoBehaviour
         CentreArea.OnFinalMoment -= StopChasing;
     }
 
+    void Start()
+    {
+        currentHealth = maxHealth;
+
+        healthBar.maxValue = maxHealth;
+        healthBar.value = currentHealth;
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        if (finalMomentStarted)
+        {
+            canChase = false;
+        }
+    }
+
     void Update()
     {
-        if (!canChase) return;
+        if (!canChase)
+            return;
 
         if (player == null)
             return;
@@ -68,8 +78,10 @@ public class Enemy : MonoBehaviour
 
     void StopChasing()
     {
+        finalMomentStarted = true;
         canChase = false;
     }
+
     void AttackPlayer()
     {
         if (Time.time >= nextAttackTime)
@@ -87,7 +99,8 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if(!canChase) return;
+        if (!canChase)
+            return;
 
         currentHealth -= damage;
 
