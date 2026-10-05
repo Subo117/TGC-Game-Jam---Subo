@@ -17,6 +17,16 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer;
     private float gameTime;
 
+    private void OnEnable()
+    {
+        CentreArea.OnFinalMoment += StopSpawning;
+    }
+
+    private void OnDisable()
+    {
+        CentreArea.OnFinalMoment -= StopSpawning;
+    }
+
     void Update()
     {
         gameTime += Time.deltaTime;
@@ -58,6 +68,11 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+    }
+
+    private void StopSpawning()
+    {
+        enabled = false;
     }
 
     float GetMediumChance()

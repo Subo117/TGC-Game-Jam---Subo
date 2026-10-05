@@ -5,6 +5,8 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
 
+    private bool canMove = true;
+
     Rigidbody2D rb;
 
     private Animator animator;
@@ -26,15 +28,19 @@ public class PlayerMove : MonoBehaviour
     private void OnEnable()
     {
         playerInput.Enable();
+        CentreArea.OnFinalMoment += StopMovement;
     }
 
     private void OnDisable()
     {
         playerInput.Disable();
+        CentreArea.OnFinalMoment -= StopMovement;
     }
 
     private void FixedUpdate()
     {
+        if (!canMove) return;
+
         Vector2 input = movementInput;
 
         rb.linearVelocity = input.normalized * moveSpeed;
@@ -52,6 +58,15 @@ public class PlayerMove : MonoBehaviour
         }
 
 
+    }
+
+    void StopMovement()
+    {
+        canMove = false;
+        movementInput = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+
+        animator.SetBool("IsWalking", false);
     }
 
 }

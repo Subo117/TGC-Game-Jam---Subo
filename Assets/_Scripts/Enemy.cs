@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
     private Transform player;
     private float nextAttackTime;
 
+    private bool canChase = true;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -28,8 +30,20 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
+    private void OnEnable()
+    {
+        CentreArea.OnFinalMoment += StopChasing;
+    }
+
+    private void OnDisable()
+    {
+        CentreArea.OnFinalMoment -= StopChasing;
+    }
+
     void Update()
     {
+        if (!canChase) return;
+
         if (player == null)
             return;
 
@@ -52,6 +66,10 @@ public class Enemy : MonoBehaviour
         transform.position += (Vector3)direction.normalized * moveSpeed * Time.deltaTime;
     }
 
+    void StopChasing()
+    {
+        canChase = false;
+    }
     void AttackPlayer()
     {
         if (Time.time >= nextAttackTime)
@@ -69,6 +87,8 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if(!canChase) return;
+
         currentHealth -= damage;
 
         healthBar.value = currentHealth;
