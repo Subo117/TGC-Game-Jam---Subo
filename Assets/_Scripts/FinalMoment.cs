@@ -1,8 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using Unity.Cinemachine;
 using System;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FinalMoment : MonoBehaviour
 {
@@ -10,6 +13,8 @@ public class FinalMoment : MonoBehaviour
     [SerializeField] private Light2D globalLight;
     [SerializeField] private float transitionTime = 10f;
     [SerializeField] private Color startColor;
+    [SerializeField] private float globalStartIntensity = 1f;
+    [SerializeField] private float globalTargetIntensity = 2f;
     [SerializeField] private Color targetColor = Color.white;
 
     [Header("Player Flash Light")]
@@ -28,6 +33,10 @@ public class FinalMoment : MonoBehaviour
     [Header("Disco Light")]
     [SerializeField] private float discoChangeTime = 0.3f;
     [SerializeField] private Color[] discoColors;
+
+    //[Header("Game End Screen")]
+    //[SerializeField] private GameObject gameEndScreen;
+    //[SerializeField] private TMP_Text gameEndText;
 
     private int currentColorIndex = 0;
 
@@ -55,7 +64,7 @@ public class FinalMoment : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             SpriteRenderer spriteRenderer = enemy.GetComponent<SpriteRenderer>();
-            
+
 
             if (spriteRenderer != null)
             {
@@ -77,6 +86,12 @@ public class FinalMoment : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         StartCoroutine(DiscoLight());
+
+        //AudioManager.Instance.PlayDiscoMusic();
+
+        yield return new WaitForSeconds(10f);
+
+        StartCoroutine(ShowGameEndScreen());
     }
 
     IEnumerator DoFinalMomentRoutine()
@@ -98,17 +113,21 @@ public class FinalMoment : MonoBehaviour
     private IEnumerator ChangeColor()
     {
         float timer = 0f;
+
         startColor = globalLight.color;
+        globalStartIntensity = globalLight.intensity;
 
         while (timer < transitionTime)
         {
             timer += Time.deltaTime;
             float t = timer / transitionTime;
             globalLight.color = Color.Lerp(startColor, targetColor, t);
+            globalLight.intensity = Mathf.Lerp(globalStartIntensity, globalTargetIntensity, t);
             yield return null;
         }
 
         globalLight.color = targetColor;
+        globalLight.intensity = globalTargetIntensity;
     }
 
     private IEnumerator ChangeIntensity()
@@ -158,6 +177,33 @@ public class FinalMoment : MonoBehaviour
 
             yield return new WaitForSeconds(discoChangeTime);
         }
+    }
+
+    IEnumerator ShowGameEndScreen()
+    {
+        //gameEndScreen.SetActive(true);
+
+        //gameEndText.text = "You have defeated the darkness and saved the cakes";
+        //yield return new WaitForSeconds(3f);
+
+        //gameEndText.text = "Alan Wake up and realises it was just his nightmare";
+        //yield return new WaitForSeconds(3f);
+
+        //gameEndText.text = "Yet another diabetic nightmare!!";
+        //yield return new WaitForSeconds(3f);
+
+        //gameEndText.text = "Anyways...";
+        //yield return new WaitForSeconds(3f);
+
+        //gameEndText.text = "Thank You for playing!";
+        //yield return new WaitForSeconds(3f);
+
+        //gameEndText.text = "Subo... Signing off!!";
+        //yield return new WaitForSeconds(3f);
+
+        //SceneManager.LoadScene("Main Menu");
+
+        yield return null;
     }
 
 }

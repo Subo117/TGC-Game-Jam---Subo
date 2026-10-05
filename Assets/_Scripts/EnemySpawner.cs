@@ -154,7 +154,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (Random.Range(0f, 100f) < mediumChance)
         {
-            enemyToSpawn =  mediumEnemyPrefab;
+            enemyToSpawn = mediumEnemyPrefab;
         }
         else
         {

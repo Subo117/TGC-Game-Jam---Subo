@@ -72,11 +72,12 @@ public class CentreArea : MonoBehaviour
         if (FinalMomentStarted)
             return;
 
-        Debug.Log("Final Moment Triggered");
+        //AudioManager.Instance.PlayLevelUpClip();
 
         FinalMomentStarted = true;
         ChangeInstructionText?.Invoke("");
 
+        Debug.Log("Final Moment Triggered");
         OnFinalMoment?.Invoke();
     }
 }

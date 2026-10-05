@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float CurrentHealth => currentHealth;
 
     public event Action OnHealthChanged;
+    public static event Action OnPlayerDied;
 
     private void Awake()
     {
@@ -43,7 +44,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player Died");
-
-        Time.timeScale = 0f;
+        OnPlayerDied?.Invoke();
     }
 }

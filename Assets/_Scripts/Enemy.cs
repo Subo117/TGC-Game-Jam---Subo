@@ -147,6 +147,7 @@ public class Enemy : MonoBehaviour
                 Instantiate(orbPrefab, transform.position, Quaternion.identity);
             }
         }
+        //AudioManager.Instance.PlayKillClip();
 
         Destroy(gameObject);
     }

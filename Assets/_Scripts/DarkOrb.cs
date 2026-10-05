@@ -8,6 +8,8 @@ public class DarkOrb : MonoBehaviour
     {
         if (!collision.CompareTag("Player")) return;
 
+        //AudioManager.Instance.PlayXPClip();
+
         Player player = collision.GetComponent<Player>();
 
         if (player != null)

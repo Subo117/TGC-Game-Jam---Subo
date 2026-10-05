@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
 
     public static event Action OnMaxOrbReached;
 
+    public void SayHello()
+    {
+        Debug.Log("hello");
+    }
+
     private void OnEnable()
     {
         if (player != null)
@@ -34,6 +39,7 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText += ChangeInstructiontext;
+        //Player.OnPlayerDied += GameOverMenu;
     }
 
     private void OnDisable()
@@ -46,6 +52,8 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText -= ChangeInstructiontext;
+        //Player.OnPlayerDied -= GameOverMenu;
+
 
         if (ScoreManager.Instance != null)
         {
@@ -105,16 +113,23 @@ public class UIManager : MonoBehaviour
     {
         instructionText.text = text;
     }
+
     public void PauseGame()
     {
-        Time.timeScale = 0f;
         pauseScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
-        Time.timeScale = 1f;
         pauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Game");
     }
 
     public void MainMenu()
@@ -123,6 +138,12 @@ public class UIManager : MonoBehaviour
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
     }
+
+    //public void GameOverMenu()
+    //{
+    //    Time.timeScale = 0f;
+    //    GameOverScreen.SetActive(true);
+    //}
 
     IEnumerator StartText()
     {
