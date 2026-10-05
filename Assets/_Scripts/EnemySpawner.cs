@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemies")]
@@ -25,6 +25,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float cameraMaxX = 13f;
     [SerializeField] private float cameraMinY = -7f;
     [SerializeField] private float cameraMaxY = 7f;
+
+    [SerializeField] private CanvasGroup fadeScreen;
 
     private float spawnTimer;
     private float gameTime;
@@ -76,8 +78,42 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void StopSpawning()
+    private IEnumerator FadeIn()
     {
+        float time = 0f;
+        float duration = 1f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            fadeScreen.alpha = Mathf.Lerp(0f, 1f, time / duration);
+            yield return null;
+        }
+
+        fadeScreen.alpha = 1f;
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float time = 0f;
+        float duration = 1f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            fadeScreen.alpha = Mathf.Lerp(1f, 0f, time / duration);
+            yield return null;
+        }
+
+        fadeScreen.alpha = 0f;
+    }
+
+    IEnumerator DoFade()
+    {
+        StartCoroutine(FadeIn());
+
+        yield return new WaitForSeconds(2f);
+
         int enemyCount = Random.Range(minFinalEnemies, maxFinalEnemies + 1);
 
         for (int i = 0; i < enemyCount; i++)
@@ -86,6 +122,12 @@ public class EnemySpawner : MonoBehaviour
         }
 
         enabled = false;
+
+        StartCoroutine(FadeOut());
+    }
+    private void StopSpawning()
+    {
+        StartCoroutine(DoFade());
     }
 
     private void SpawnEnemyOutsideCamera()
@@ -107,7 +149,17 @@ public class EnemySpawner : MonoBehaviour
             attempts < 100
         );
 
-        GameObject enemyToSpawn = GetEnemyPrefab();
+        float mediumChance = 50f;
+        GameObject enemyToSpawn;
+
+        if (Random.Range(0f, 100f) < mediumChance)
+        {
+            enemyToSpawn =  mediumEnemyPrefab;
+        }
+        else
+        {
+            enemyToSpawn = easyEnemyPrefab;
+        }
 
         if (enemyToSpawn != null)
         {

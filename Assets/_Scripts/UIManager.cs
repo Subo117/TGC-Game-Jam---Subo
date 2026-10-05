@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,6 +65,8 @@ public class UIManager : MonoBehaviour
 
         playerHealthBar.interactable = false;
         darkOrbBar.interactable = false;
+
+        StartCoroutine(StartText());
     }
 
     private void UpdateHealthBar()
@@ -112,5 +115,15 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+    }
+
+    IEnumerator StartText()
+    {
+        instructionText.text = "Cakes are attacking me!!";
+        yield return new WaitForSeconds(5f);
+        instructionText.text = "I have to fight them";
+        yield return new WaitForSeconds(5f);
+        instructionText.text = "";
+
     }
 }

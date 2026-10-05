@@ -228,6 +228,94 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b701cea6e6063469988d3c10c6e655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CentreArea
+--- !u!1 &167475828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 167475829}
+  - component: {fileID: 167475831}
+  - component: {fileID: 167475830}
+  - component: {fileID: 167475832}
+  m_Layer: 5
+  m_Name: Fade Screen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &167475829
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167475828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1885180927}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &167475830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167475828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &167475831
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167475828}
+  m_CullTransparentMesh: 1
+--- !u!225 &167475832
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167475828}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &281713416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2391,7 +2479,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 7
+    OrthographicSize: 9.695285
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -24750,7 +24838,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 9.695285
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -25919,6 +26007,7 @@ MonoBehaviour:
   globalLight: {fileID: 619394801}
   transitionTime: 5
   startColor: {r: 0.11764706, g: 0.15686275, b: 0.81960785, a: 0}
+  targetColor: {r: 1, g: 1, b: 1, a: 1}
   playerFlashLight: {fileID: 1576740897}
   startIntensity: 4
   targetIntensity: 0
@@ -25961,6 +26050,53 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1391856415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1391856416}
+  - component: {fileID: 1391856417}
+  m_Layer: 0
+  m_Name: UI Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1391856416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391856415}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1391856417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391856415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef079a7be8ab2e448fe8c0b8329d547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimation
+  healthUI: {fileID: 2056225498}
+  orbUI: {fileID: 1045987851}
+  duration: 0.8
 --- !u!1 &1418655156
 GameObject:
   m_ObjectHideFlags: 0
@@ -29819,7 +29955,7 @@ MonoBehaviour:
   darkOrbBar: {fileID: 1045987852}
   pauseScreen: {fileID: 958658318}
   instructionText: {fileID: 669348478}
-  maxOrb: 50
+  maxOrb: 20
 --- !u!1 &1576740896
 GameObject:
   m_ObjectHideFlags: 0
@@ -29940,7 +30076,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashLightAttack
   damage: 25
-  damageInterval: 0.5
 --- !u!60 &1576740900
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -30273,6 +30408,7 @@ RectTransform:
   - {fileID: 1045987851}
   - {fileID: 958658319}
   - {fileID: 669348477}
+  - {fileID: 167475829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -30398,6 +30534,7 @@ MonoBehaviour:
   cameraMaxX: 13
   cameraMinY: -7
   cameraMaxY: 7
+  fadeScreen: {fileID: 167475832}
 --- !u!4 &1898823100
 Transform:
   m_ObjectHideFlags: 0
@@ -30732,3 +30869,4 @@ SceneRoots:
   - {fileID: 1566021515}
   - {fileID: 139860983}
   - {fileID: 1313078694}
+  - {fileID: 1391856416}

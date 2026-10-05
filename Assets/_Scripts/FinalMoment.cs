@@ -33,6 +33,13 @@ public class FinalMoment : MonoBehaviour
 
     private void DoFinalMoment()
     {
+        StartCoroutine(DoFinalMomentRoutine());
+    }
+
+    IEnumerator DoFinalMomentRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+
         StartCoroutine(ChangeColor());
         StartCoroutine(ChangeIntensity());
         StartCoroutine(ChangeLens());
@@ -63,7 +70,7 @@ public class FinalMoment : MonoBehaviour
         {
             timer += Time.deltaTime;
             float t = timer / transitionTime;
-            playerFlashLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t)
+            playerFlashLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
             yield return null;
         }
 
@@ -85,4 +92,5 @@ public class FinalMoment : MonoBehaviour
 
         cam.Lens.OrthographicSize = targetLens;
     }
+
 }
