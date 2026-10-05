@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText += ChangeInstructiontext;
+        CentreArea.OnFinalMoment += DoFinalMoment;
         Player.OnPlayerDied += GameOverMenu;
     }
 
@@ -52,6 +53,7 @@ public class UIManager : MonoBehaviour
 
         CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
         CentreArea.ChangeInstructionText -= ChangeInstructiontext;
+        CentreArea.OnFinalMoment -= DoFinalMoment;
         Player.OnPlayerDied -= GameOverMenu;
 
 
@@ -145,6 +147,11 @@ public class UIManager : MonoBehaviour
         pauseScreen.SetActive(true);
     }
 
+    public void DoFinalMoment()
+    {
+        playerHealthBar.gameObject.SetActive(false);
+        darkOrbBar.gameObject.SetActive(false);
+    }
     IEnumerator StartText()
     {
         instructionText.text = "Cakes are attacking me!!";
