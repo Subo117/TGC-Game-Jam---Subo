@@ -1,6 +1,5 @@
-using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Unity.Cinemachine;
 
@@ -10,7 +9,7 @@ public class FinalMoment : MonoBehaviour
     [SerializeField] private Light2D globalLight;
     [SerializeField] private float transitionTime = 10f;
     [SerializeField] private Color startColor;
-    private Color targetColor = Color.white;
+    [SerializeField] private Color targetColor = Color.white;
 
     [Header("Player Flash Light")]
     [SerializeField] private Light2D playerFlashLight;
@@ -22,7 +21,6 @@ public class FinalMoment : MonoBehaviour
     [SerializeField] private float startLens = 13f;
     [SerializeField] private float targetLens = 13f;
 
-
     private void OnEnable()
     {
         CentreArea.OnFinalMoment += DoFinalMoment;
@@ -33,40 +31,23 @@ public class FinalMoment : MonoBehaviour
         CentreArea.OnFinalMoment -= DoFinalMoment;
     }
 
-    void DoFinalMoment()
-    {
-        GlobalColorChange();
-        PlayerFlashLightChange();
-        ChangeCamera();
-    }
-
-    void GlobalColorChange()
+    private void DoFinalMoment()
     {
         StartCoroutine(ChangeColor());
-    }
-    void PlayerFlashLightChange()
-    {
         StartCoroutine(ChangeIntensity());
-    }
-    void ChangeCamera()
-    {
         StartCoroutine(ChangeLens());
     }
 
     private IEnumerator ChangeColor()
     {
         float timer = 0f;
-
         startColor = globalLight.color;
 
         while (timer < transitionTime)
         {
             timer += Time.deltaTime;
-
             float t = timer / transitionTime;
-
             globalLight.color = Color.Lerp(startColor, targetColor, t);
-
             yield return null;
         }
 
@@ -77,13 +58,15 @@ public class FinalMoment : MonoBehaviour
     {
         float timer = 0f;
         startIntensity = playerFlashLight.intensity;
+
         while (timer < transitionTime)
         {
             timer += Time.deltaTime;
             float t = timer / transitionTime;
-            playerFlashLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
+            playerFlashLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t)
             yield return null;
         }
+
         playerFlashLight.intensity = targetIntensity;
     }
 
@@ -91,6 +74,7 @@ public class FinalMoment : MonoBehaviour
     {
         float timer = 0f;
         startLens = cam.Lens.OrthographicSize;
+
         while (timer < transitionTime)
         {
             timer += Time.deltaTime;
@@ -98,7 +82,7 @@ public class FinalMoment : MonoBehaviour
             cam.Lens.OrthographicSize = Mathf.Lerp(startLens, targetLens, t);
             yield return null;
         }
+
         cam.Lens.OrthographicSize = targetLens;
-        
     }
 }

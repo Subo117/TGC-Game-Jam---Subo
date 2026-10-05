@@ -3,10 +3,12 @@ using UnityEngine.InputSystem;
 
 public class FlashLightAim : MonoBehaviour
 {
-    public Transform flashlight;
+    [SerializeField] private Transform flashlight;
 
-    void Update()
+    private void Update()
     {
+        if (Mouse.current == null) return;
+
         Vector3 mousePosition = Mouse.current.position.ReadValue();
 
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -15,6 +17,6 @@ public class FlashLightAim : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        flashlight.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        flashlight.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
 }

@@ -29,6 +29,12 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer;
     private float gameTime;
 
+    private void Awake()
+    {
+        spawnTimer = 0f;
+        gameTime = 0f;
+    }
+
     private void OnEnable()
     {
         CentreArea.OnFinalMoment += StopSpawning;
@@ -42,7 +48,6 @@ public class EnemySpawner : MonoBehaviour
     private void Update()
     {
         gameTime += Time.deltaTime;
-
         spawnTimer -= Time.deltaTime;
 
         if (spawnTimer <= 0f)
@@ -61,25 +66,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        float randomX = Random.Range(minX, maxX);
-        float randomY = Random.Range(minY, maxY);
+        Vector2 spawnPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
 
-        Vector2 spawnPosition = new Vector2(randomX, randomY);
+        GameObject enemyToSpawn = GetEnemyPrefab();
 
-        float mediumChance = GetMediumChance();
-
-        GameObject enemyToSpawn;
-
-        if (Random.Range(0f, 100f) < mediumChance)
+        if (enemyToSpawn != null)
         {
-            enemyToSpawn = mediumEnemyPrefab;
+            Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
         }
-        else
-        {
-            enemyToSpawn = easyEnemyPrefab;
-        }
-
-        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
     }
 
     private void StopSpawning()
@@ -98,34 +92,39 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector2 spawnPosition;
 
+        int attempts = 0;
+
         do
         {
-            spawnPosition = new Vector2(
-                Random.Range(minX, maxX),
-                Random.Range(minY, maxY)
-            );
+            spawnPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+            attempts++;
 
         } while (
             spawnPosition.x > cameraMinX &&
             spawnPosition.x < cameraMaxX &&
             spawnPosition.y > cameraMinY &&
-            spawnPosition.y < cameraMaxY
+            spawnPosition.y < cameraMaxY &&
+            attempts < 100
         );
 
-        float mediumChance = GetMediumChance();
+        GameObject enemyToSpawn = GetEnemyPrefab();
 
-        GameObject enemyToSpawn;
+        if (enemyToSpawn != null)
+        {
+            Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+        }
+    }
+
+    private GameObject GetEnemyPrefab()
+    {
+        float mediumChance = GetMediumChance();
 
         if (Random.Range(0f, 100f) < mediumChance)
         {
-            enemyToSpawn = mediumEnemyPrefab;
-        }
-        else
-        {
-            enemyToSpawn = easyEnemyPrefab;
+            return mediumEnemyPrefab;
         }
 
-        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+        return easyEnemyPrefab;
     }
 
     private float GetMediumChance()

@@ -29819,7 +29819,7 @@ MonoBehaviour:
   darkOrbBar: {fileID: 1045987852}
   pauseScreen: {fileID: 958658318}
   instructionText: {fileID: 669348478}
-  maxOrb: 100
+  maxOrb: 50
 --- !u!1 &1576740896
 GameObject:
   m_ObjectHideFlags: 0

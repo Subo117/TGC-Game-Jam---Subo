@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     public event Action OnHealthChanged;
 
-    void Awake()
+    private void Awake()
     {
         currentHealth = maxHealth;
     }
@@ -21,9 +21,12 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
+        if (currentHealth < 0f) currentHealth = 0f;
+
         OnHealthChanged?.Invoke();
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0f)
         {
             Die();
         }
@@ -31,21 +34,16 @@ public class Player : MonoBehaviour
 
     public void Attack(Enemy enemy)
     {
-        enemy.TakeDamage(attackDamage);
+        if (enemy != null)
+        {
+            enemy.TakeDamage(attackDamage);
+        }
     }
 
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-    public float GetMaxHealth()
-    {
-        return maxHealth;
-    }
-
-    void Die()
+    private void Die()
     {
         Debug.Log("Player Died");
-        Time.timeScale = 0f; // Pause the game
+
+        Time.timeScale = 0f;
     }
 }

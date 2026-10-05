@@ -23,25 +23,37 @@ public class UIManager : MonoBehaviour
 
     public static event Action OnMaxOrbReached;
 
-
     private void OnEnable()
     {
-        player.OnHealthChanged += UpdateHealthBar;
+        if (player != null)
+        {
+            player.OnHealthChanged += UpdateHealthBar;
+        }
+
         CentreArea.OnPlayerInCentreArea += OnPlayerInCentreArea;
-
     }
-
 
     private void OnDisable()
     {
-        player.OnHealthChanged -= UpdateHealthBar;
+        if (player != null)
+        {
+            player.OnHealthChanged -= UpdateHealthBar;
+        }
+
         CentreArea.OnPlayerInCentreArea -= OnPlayerInCentreArea;
 
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnScoreChanged -= UpdateOrbBar;
+        }
     }
 
     private void Start()
     {
-        ScoreManager.Instance.OnScoreChanged += UpdateOrbBar;
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.OnScoreChanged += UpdateOrbBar;
+        }
 
         playerHealthBar.maxValue = player.MaxHealth;
         playerHealthBar.value = player.CurrentHealth;
@@ -63,24 +75,30 @@ public class UIManager : MonoBehaviour
     {
         darkOrbBar.value = score;
 
-        if(ScoreManager.Instance.CurrentOrb >= maxOrb)
+        if (score >= maxOrb)
         {
             instructionText.text = "Rush toward the centre area!!";
+
             OnMaxOrbReached?.Invoke();
         }
     }
 
     private void OnPlayerInCentreArea(bool isInArea)
     {
-        if(isInArea) instructionText.text = "Press E to Upgrade";
-        else instructionText.text = "Rush toward the centre area!!";
-    }  
+        if (isInArea)
+        {
+            instructionText.text = "Press E to Upgrade";
+        }
+        else
+        {
+            instructionText.text = "Rush toward the centre area!!";
+        }
+    }
 
     public void PauseGame()
     {
         Time.timeScale = 0f;
         pauseScreen.SetActive(true);
-
     }
 
     public void ResumeGame()
@@ -92,6 +110,7 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         Time.timeScale = 1f;
+
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
     }
 }

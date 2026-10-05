@@ -3,26 +3,28 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float moveSpeed = 2f;
 
+    [Header("Attack")]
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackRange = 1.2f;
     [SerializeField] private float attackCooldown = 1f;
 
+    [Header("Orb")]
     [SerializeField, Range(0f, 100f)] private float orbSpawnChance = 50f;
     [SerializeField] private GameObject orbPrefab;
 
+    [Header("UI")]
     [SerializeField] private Slider healthBar;
 
     private float currentHealth;
-
-    private Transform player;
     private float nextAttackTime;
 
-    private bool canChase = true;
+    private Transform player;
 
-    private static bool finalMomentStarted = false;
+    private bool canChase = true;
 
     private void OnEnable()
     {
@@ -34,22 +36,30 @@ public class Enemy : MonoBehaviour
         CentreArea.OnFinalMoment -= StopChasing;
     }
 
-    void Start()
+    private void Start()
     {
         currentHealth = maxHealth;
 
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
+        if (healthBar != null)
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
+        }
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
-        if (finalMomentStarted)
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+
+        if (CentreArea.FinalMomentStarted)
         {
             canChase = false;
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (!canChase)
             return;
@@ -69,32 +79,31 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void FollowPlayer()
+    private void FollowPlayer()
     {
         Vector2 direction = player.position - transform.position;
 
         transform.position += (Vector3)direction.normalized * moveSpeed * Time.deltaTime;
     }
 
-    void StopChasing()
+    private void StopChasing()
     {
-        finalMomentStarted = true;
         canChase = false;
     }
 
-    void AttackPlayer()
+    private void AttackPlayer()
     {
-        if (Time.time >= nextAttackTime)
+        if (Time.time < nextAttackTime)
+            return;
+
+        Player playerScript = player.GetComponent<Player>();
+
+        if (playerScript != null)
         {
-            Player playerScript = player.GetComponent<Player>();
-
-            if (playerScript != null)
-            {
-                playerScript.TakeDamage(attackDamage);
-            }
-
-            nextAttackTime = Time.time + attackCooldown;
+            playerScript.TakeDamage(attackDamage);
         }
+
+        nextAttackTime = Time.time + attackCooldown;
     }
 
     public void TakeDamage(float damage)
@@ -104,21 +113,27 @@ public class Enemy : MonoBehaviour
 
         currentHealth -= damage;
 
-        healthBar.value = currentHealth;
+        if (healthBar != null)
+        {
+            healthBar.value = currentHealth;
+        }
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0f)
         {
             Die();
         }
     }
 
-    void Die()
+    private void Die()
     {
         float randomChance = Random.Range(0f, 100f);
 
         if (randomChance <= orbSpawnChance)
         {
-            Instantiate(orbPrefab, transform.position, Quaternion.identity);
+            if (orbPrefab != null)
+            {
+                Instantiate(orbPrefab, transform.position, Quaternion.identity);
+            }
         }
 
         Destroy(gameObject);

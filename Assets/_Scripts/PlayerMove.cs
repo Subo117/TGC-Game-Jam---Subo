@@ -7,22 +7,21 @@ public class PlayerMove : MonoBehaviour
 
     private bool canMove = true;
 
-    Rigidbody2D rb;
-
+    private Rigidbody2D rb;
     private Animator animator;
-    bool isWalking;
+    private PlayerInput playerInput;
 
-    PlayerInput playerInput;
-    Vector2 movementInput;
+    private Vector2 movementInput;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerInput = new PlayerInput();
         animator = GetComponent<Animator>();
 
-        playerInput.Player.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
-        playerInput.Player.Move.canceled += ctx => movementInput = Vector2.zero;
+        playerInput = new PlayerInput();
+
+        playerInput.Player.Move.performed += OnMove;
+        playerInput.Player.Move.canceled += OnMoveCanceled;
     }
 
     private void OnEnable()
@@ -37,30 +36,43 @@ public class PlayerMove : MonoBehaviour
         CentreArea.OnFinalMoment -= StopMovement;
     }
 
+    private void OnDestroy()
+    {
+        playerInput.Player.Move.performed -= OnMove;
+        playerInput.Player.Move.canceled -= OnMoveCanceled;
+    }
+
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        movementInput = Vector2.zero;
+    }
+
     private void FixedUpdate()
     {
         if (!canMove) return;
 
-        Vector2 input = movementInput;
+        rb.linearVelocity = movementInput.normalized * moveSpeed;
 
-        rb.linearVelocity = input.normalized * moveSpeed;
+        bool isWalking = movementInput.sqrMagnitude > 0.01f;
 
-        isWalking = input.sqrMagnitude > 0.01f;
         animator.SetBool("IsWalking", isWalking);
 
-        animator.SetFloat("InputX", input.x);
-        animator.SetFloat("InputY", input.y);
+        animator.SetFloat("InputX", movementInput.x);
+        animator.SetFloat("InputY", movementInput.y);
 
         if (isWalking)
         {
-            animator.SetFloat("LastInputX", input.x);
-            animator.SetFloat("LastInputY", input.y);
+            animator.SetFloat("LastInputX", movementInput.x);
+            animator.SetFloat("LastInputY", movementInput.y);
         }
-
-
     }
 
-    void StopMovement()
+    private void StopMovement()
     {
         canMove = false;
         movementInput = Vector2.zero;
@@ -68,5 +80,4 @@ public class PlayerMove : MonoBehaviour
 
         animator.SetBool("IsWalking", false);
     }
-
 }

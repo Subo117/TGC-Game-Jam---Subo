@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +7,15 @@ public class CentreArea : MonoBehaviour
     public static event Action<bool> OnPlayerInCentreArea;
     public static event Action OnFinalMoment;
 
-    private bool isMAxOrbReached = false;
+    public static bool FinalMomentStarted { get; private set; }
+
+    private bool isMaxOrbReached = false;
     private bool playerInCentre = false;
+
+    private void Awake()
+    {
+        FinalMomentStarted = false;
+    }
 
     private void OnEnable()
     {
@@ -23,33 +29,52 @@ public class CentreArea : MonoBehaviour
 
     private void OnMaxOrbReached()
     {
-        isMAxOrbReached = true;
+        isMaxOrbReached = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isMAxOrbReached)
+        if (collision.CompareTag("Player") && isMaxOrbReached)
         {
             Debug.Log("Player Entered Centre Area");
+
             playerInCentre = true;
+
             OnPlayerInCentreArea?.Invoke(true);
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isMAxOrbReached)
+        if (collision.CompareTag("Player") && isMaxOrbReached)
         {
             playerInCentre = false;
+
             OnPlayerInCentreArea?.Invoke(false);
         }
     }
 
     private void Update()
     {
-        if (playerInCentre && Keyboard.current.eKey.wasPressedThisFrame)
+        if (!playerInCentre)
+            return;
+
+        if (Keyboard.current != null &&
+            Keyboard.current.eKey.wasPressedThisFrame)
         {
-            Debug.Log("Final Moment Triggered");
-            OnFinalMoment?.Invoke();
+            TriggerFinalMoment();
         }
+    }
+
+    private void TriggerFinalMoment()
+    {
+        if (FinalMomentStarted)
+            return;
+
+        Debug.Log("Final Moment Triggered");
+
+        FinalMomentStarted = true;
+
+        OnFinalMoment?.Invoke();
     }
 }
