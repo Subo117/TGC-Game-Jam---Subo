@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
 
         OnHealthChanged?.Invoke();
 
+        AudioManager.Instance.PlayHurtClip();
+
         if (currentHealth <= 0f)
         {
             Die();

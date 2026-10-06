@@ -1345,7 +1345,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmAudioSource: {fileID: 1372366810}
   sfxAudioSource: {fileID: 292486152}
+  bgmClip: {fileID: 8300000, guid: 427c13613b9e0d14f8b2275e96de4425, type: 3}
   discoClip: {fileID: 8300000, guid: 3c6f113e7f90f7d46908131baf44df91, type: 3}
+  hurtClip: {fileID: 8300000, guid: 7568661e4b0b9334dbe4bc23ac64b92d, type: 3}
   killClip: {fileID: 8300000, guid: 26600fd890bdb0645887f45940713b65, type: 3}
   xpClip: {fileID: 8300000, guid: 55863f23402a0e94b8feefdcd602302a, type: 3}
   levelUpClip: {fileID: 8300000, guid: da05cd07ddc26ff4391e2714d9299612, type: 3}

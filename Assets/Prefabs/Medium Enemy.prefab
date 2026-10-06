@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Medium Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4952750884185745283, guid: b22a2608e64bbf149b4e0afd18d90439, type: 3}
+      propertyPath: m_Radius
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 6405316915586365359, guid: b22a2608e64bbf149b4e0afd18d90439, type: 3}
       propertyPath: maxHealth
       value: 100
